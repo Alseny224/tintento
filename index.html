@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TinTenToe – Le jeu de stratégie</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+    }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    }
+
+    .hero img.logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #e94560, #f5a623);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      margin-top: 16px;
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    .hero .badges {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      color: #ddd;
+    }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      border-radius: 50px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 20px rgba(233,69,96,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .play-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(233,69,96,0.6);
+    }
+
+    .play-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 80px 20px;
+      text-align: center;
+      background: #0f0f1a;
+    }
+
+    .features h2 {
+      font-size: 2rem;
+      margin-bottom: 48px;
+      color: #fff;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 32px 24px;
+      transition: transform 0.2s;
+    }
+
+    .feature-card:hover { transform: translateY(-4px); }
+
+    .feature-card .icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: #f5a623; }
+    .feature-card p { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+
+    /* ORIGIN */
+    .origin {
+      padding: 80px 20px;
+      background: #0f0f1a;
+      text-align: center;
+    }
+
+    .origin h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .origin-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* texture craie animée en fond */
+    .origin-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 38px,
+          rgba(255,255,255,0.03) 38px,
+          rgba(255,255,255,0.03) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 38px,
+          rgba(255,255,255,0.03) 38px,
+          rgba(255,255,255,0.03) 40px
+        );
+      pointer-events: none;
+    }
+
+    .origin-quote {
+      font-size: 1.15rem;
+      color: #ccc;
+      line-height: 1.9;
+      font-style: italic;
+      position: relative;
+    }
+
+    .origin-quote strong {
+      color: #f5a623;
+      font-style: normal;
+    }
+
+    .chalk-board {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .chalk-legend {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .chalk-legend .item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    .chalk-legend .item .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-craie { background: radial-gradient(circle, #e8d5a3, #c4a96a); }
+    .dot-charbon { background: radial-gradient(circle, #777, #333); }
+
+    /* SCREENSHOTS */
+    .screenshots {
+      padding: 80px 20px;
+      background: #13131f;
+      text-align: center;
+    }
+
+    .screenshots h2 {
+      font-size: 2rem;
+      margin-bottom: 48px;
+    }
+
+    .screenshots-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .screenshots-row img {
+      width: 200px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    /* BETA */
+    .beta {
+      padding: 80px 20px;
+      background: #0f0f1a;
+      text-align: center;
+    }
+
+    .beta h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .beta .subtitle {
+      color: #aaa;
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .beta-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(233,69,96,0.3);
+      border-radius: 20px;
+      padding: 40px 32px;
+    }
+
+    .beta-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .beta-perk {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .beta-perk .perk-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(233,69,96,0.15);
+      border: 1px solid rgba(233,69,96,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .beta-btn {
+      display: inline-block;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      border-radius: 50px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(233,69,96,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .beta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(233,69,96,0.6);
+    }
+
+    .beta-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      background: #0a0a14;
+      color: #555;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #e94560;
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="logo" src="logo.png" alt="TinTenToe logo" />
+    <h1>TinTenToe</h1>
+    <p>Le jeu de stratégie ultime. Affronte un ami ou défie l'IA dans des parties palpitantes.</p>
+
+    <div class="badges">
+      <span class="badge">🎮 2 joueurs local</span>
+      <span class="badge">🤖 IA intégrée</span>
+      <span class="badge">🎵 Musique & sons</span>
+      <span class="badge">🌍 Multilingue</span>
+      <span class="badge">🚫 Sans pub</span>
+    </div>
+
+    <a class="play-btn" href="https://play.google.com/store/apps/details?id=com.diallo.tintentoe" target="_blank">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l15 8.5-15 8.5C3.5 20.5 3 20.5 3 20.5z"/></svg>
+      Télécharger sur Google Play
+    </a>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>Pourquoi TinTenToe ?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+        <h3>IA redoutable</h3>
+        <p>Plusieurs niveaux de difficulté pour tous les profils de joueurs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👥</div>
+        <h3>Mode 2 joueurs</h3>
+        <p>Joue avec un ami sur le même appareil, n'importe où.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎵</div>
+        <h3>Son & musique</h3>
+        <p>Une ambiance sonore immersive qui rend chaque partie unique.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚡</div>
+        <h3>Rapide & fluide</h3>
+        <p>Interface légère, aucune pub, expérience sans interruption.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORIGIN -->
+  <section class="origin">
+    <h2>Une histoire guinéenne</h2>
+    <div class="origin-inner">
+      <p class="origin-quote">
+        Avant les smartphones, ce jeu se jouait autrement.<br/><br/>
+        En Guinée, on <strong>traçait le plateau à même le sol</strong>,
+        sur les tables-bancs des classes, ou par terre dans la cour.
+        Un carré, une grille, des <strong>diagonales tracées à la main</strong>
+        — et le jeu était prêt.<br/><br/>
+        Les pions ? Ce qu'on avait sous la main —
+        des <strong>boulettes de papier froissé</strong>,
+        des <strong>morceaux de craie de couleur</strong>,
+        ou des <strong>éclats de charbon</strong>.
+        Chaque joueur choisissait les siens. Pas besoin de matériel —
+        juste de l'ingéniosité et de la stratégie.<br/><br/>
+        Le jeu se jouait sur les <strong>9 intersections</strong> du plateau,
+        avec les diagonales comme chemins supplémentaires pour piéger l'adversaire.<br/><br/>
+        <strong>TinTenToe</strong>, c'est ce souvenir transporté dans ta poche.
+      </p>
+
+      <div class="chalk-board">
+        <svg width="200" height="200" viewBox="0 0 200 200" style="flex-shrink:0">
+          <!-- Lignes horizontales -->
+          <line x1="20" y1="20" x2="180" y2="20" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="20" y1="180" x2="180" y2="180" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <!-- Lignes verticales -->
+          <line x1="20" y1="20" x2="20" y2="180" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="180" y1="20" x2="180" y2="180" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+          <!-- Diagonales -->
+          <line x1="20" y1="20" x2="180" y2="180" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="180" y1="20" x2="20" y2="180" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Nœuds -->
+          <circle cx="20"  cy="20"  r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="100" cy="20"  r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="180" cy="20"  r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="20"  cy="100" r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="100" cy="100" r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="180" cy="100" r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="20"  cy="180" r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="100" cy="180" r="4" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="180" cy="180" r="4" fill="rgba(255,255,255,0.5)"/>
+          <!-- Pions (boulettes de papier) joueur 1 -->
+          <circle cx="180" cy="20"  r="12" fill="#e8d5a3" opacity="0.9"/>
+          <circle cx="180" cy="20"  r="12" fill="none" stroke="#c4a96a" stroke-width="1"/>
+          <text x="180" y="25" text-anchor="middle" font-size="10" fill="#8a6a2a">✦</text>
+
+          <circle cx="100" cy="100" r="12" fill="#e8d5a3" opacity="0.9"/>
+          <circle cx="100" cy="100" r="12" fill="none" stroke="#c4a96a" stroke-width="1"/>
+          <text x="100" y="105" text-anchor="middle" font-size="10" fill="#8a6a2a">✦</text>
+
+          <circle cx="20"  cy="180" r="12" fill="#e8d5a3" opacity="0.9"/>
+          <circle cx="20"  cy="180" r="12" fill="none" stroke="#c4a96a" stroke-width="1"/>
+          <text x="20" y="185" text-anchor="middle" font-size="10" fill="#8a6a2a">✦</text>
+        </svg>
+
+        <div class="chalk-legend">
+          <div class="item">
+            <div class="dot" style="background: radial-gradient(circle, #f0e0b0, #c4a96a);"></div>
+            <span>Craie de couleur</span>
+          </div>
+          <div class="item">
+            <div class="dot" style="background: radial-gradient(circle, #666, #222);"></div>
+            <span>Charbon</span>
+          </div>
+          <div class="item">
+            <div class="dot" style="background: radial-gradient(circle, #ddd, #aaa); box-shadow: inset 0 0 4px rgba(0,0,0,0.3);"></div>
+            <span>Papier froissé</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="screenshots">
+    <h2>Aperçu</h2>
+    <div class="screenshots-row">
+      <!-- Remplace ces fichiers par tes vraies captures d'écran -->
+      <img src="screen1.png" alt="Écran d'accueil" />
+      <img src="screen2.png" alt="Partie en cours" />
+      <img src="screen3.png" alt="Victoire" />
+    </div>
+  </section>
+
+  <!-- BETA -->
+  <section class="beta">
+    <h2>Deviens bêta testeur</h2>
+    <p class="subtitle">
+      TinTenToe arrive bientôt sur le Play Store. Rejoins les premiers testeurs
+      et aide-moi à améliorer le jeu avant le lancement officiel.
+    </p>
+
+    <div class="beta-card">
+      <div class="beta-perks">
+        <div class="beta-perk">
+          <div class="perk-icon">🎮</div>
+          <span>Accès anticipé à la version bêta avant tout le monde</span>
+        </div>
+        <div class="beta-perk">
+          <div class="perk-icon">🐛</div>
+          <span>Signale les bugs et influence directement les améliorations</span>
+        </div>
+        <div class="beta-perk">
+          <div class="perk-icon">⭐</div>
+          <span>Ton nom dans les remerciements de l'app</span>
+        </div>
+        <div class="beta-perk">
+          <div class="perk-icon">🔔</div>
+          <span>Notifié en premier lors de chaque nouvelle mise à jour</span>
+        </div>
+      </div>
+
+      <a class="beta-btn" href="mailto:dalseny105@gmail.com?subject=Candidature%20bêta%20testeur%20TinTenToe&body=Bonjour%2C%0A%0AJe%20souhaite%20devenir%20bêta%20testeur%20de%20TinTenToe.%0A%0ALe%20model%20de%20mon%20Android%20%3A%20%0AVersion%20Android%20%3A%20">
+        Je veux tester l'app
+      </a>
+      <p class="beta-note">Un email te sera envoyé avec le lien d'accès bêta.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 TinTenToe &nbsp;|&nbsp;
+      <a href="https://alseny224.github.io/privacy-policy">Politique de confidentialité</a>
+    </p>
+  </footer>
+
+</body>
+</html>
