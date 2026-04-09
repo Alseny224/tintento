@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TinTenToe – Bientôt disponible</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      margin-bottom: 28px;
+    }
+
+    .badge-test {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,166,35,0.15);
+      border: 1px solid rgba(245,166,35,0.4);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      color: #f5a623;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .dot-anim {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f5a623;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #e94560, #f5a623);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #aaa;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .info-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 36px 32px;
+      max-width: 500px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .info-card p {
+      font-size: 1rem;
+      color: #ccc;
+      line-height: 1.8;
+    }
+
+    .info-card strong {
+      color: #f5a623;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .beta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      border-radius: 50px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(233,69,96,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 16px;
+    }
+
+    .beta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(233,69,96,0.6);
+    }
+
+    .back-link {
+      font-size: 0.85rem;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #aaa; }
+
+    footer {
+      margin-top: 48px;
+      font-size: 0.8rem;
+      color: #333;
+    }
+
+    footer a {
+      color: #e94560;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <img class="logo" src="logo.png" alt="TinTenToe" />
+
+  <div class="badge-test">
+    <div class="dot-anim"></div>
+    Phase de test en cours
+  </div>
+
+  <h1>Bientôt sur le Play Store</h1>
+
+  <p class="tagline">
+    TinTenToe n'est pas encore disponible publiquement.<br/>
+    L'app est actuellement en phase de tests bêta.
+  </p>
+
+  <div class="info-card">
+    <p>
+      Nous travaillons pour offrir la <strong>meilleure expérience possible</strong>
+      avant le lancement officiel.<br/><br/>
+      Tu veux jouer avant tout le monde ? Deviens <strong>bêta testeur</strong>
+      et reçois un accès direct à l'application.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <span>Envoie un email pour rejoindre le programme bêta</span>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <span>Reçois le lien d'installation sur ton Android</span>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <span>Joue et partage tes retours pour améliorer le jeu</span>
+      </div>
+    </div>
+  </div>
+
+  <a class="beta-btn" href="mailto:dalseny105@gmail.com?subject=Candidature%20bêta%20testeur%20TinTenToe&body=Bonjour%2C%0A%0AJe%20souhaite%20devenir%20bêta%20testeur%20de%20TinTenToe.%0A%0AModèle%20de%20mon%20Android%20%3A%20%0AVersion%20Android%20%3A%20">
+    ✉ Je veux être bêta testeur
+  </a>
+
+  <a class="back-link" href="index.html">← Retour au site</a>
+
+  <footer>
+    © 2026 TinTenToe &nbsp;|&nbsp;
+    <a href="https://alseny224.github.io/privacy-policy">Politique de confidentialité</a>
+  </footer>
+
+</body>
+</html>
